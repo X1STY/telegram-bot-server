@@ -1,9 +1,9 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
+    ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.json',
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
@@ -12,13 +12,42 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
-  rules: {
-    semi: 'off',
-    '@typescript-eslint/semi': 'error',
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+  'import/resolver': {
+    typescript: {
+      project: './tsconfig.json',
+    },
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts'],
+    },
+    ignorePatterns: ['.eslintrc.js'],
+    rules: {
+      '@typescript-eslint/no-shadow': 0,
+      'no-underscore-dangle': 0,
+      'max-classes-per-file': 0,
+      'class-methods-use-this': 0,
+      'no-param-reassign': 0,
+      'import/extensions': 0,
+      'import/no-extraneous-dependencies': 0,
+      'import/prefer-default-export': 0,
+      'import/no-cycle': 2,
+      'import/order': [
+        2,
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          'newlines-between': 'always',
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+            },
+          ],
+          alphabetize: {
+            order: 'asc',
+          },
+        },
+      ],
+    },
   },
 };
