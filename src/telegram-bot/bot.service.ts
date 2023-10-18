@@ -3,6 +3,7 @@ import TelegramBot = require('node-telegram-bot-api');
 import { PrismaService } from 'prisma.service';
 import { InfoPageAboutZone } from './InfoAboutEconomicZone/EconomicZonePage';
 import { User } from '@prisma/client';
+import { pathToImageFolder } from '@/constants';
 
 @Injectable()
 export class BotService implements OnModuleInit {
@@ -25,13 +26,11 @@ export class BotService implements OnModuleInit {
         );
       }
 
-      bot.sendMessage(
-        msg.chat.id,
-        `Здравствуйте, ${msg.from.first_name}! Этот чат-бот позволит вам окунуться в мир ОЭЗ`,
-        {
-          reply_markup: this.FirstMenu()
-        }
-      );
+      await bot.sendPhoto(msg.chat.id, pathToImageFolder + 'Обложка.png', {
+        reply_markup: this.FirstMenu(),
+        parse_mode: 'HTML',
+        caption: `Здравствуйте, ${msg.from.first_name}! Этот чат-бот позволит вам окунуться в мир ОЭЗ`
+      });
     });
     bot.on('polling_error', (msg) => {
       console.log(msg);
