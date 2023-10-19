@@ -16,7 +16,14 @@ model User {
   username String
   full_name String
   registration_form_full_name String?
-  registration_form_login String?
+  registration_form_contact_data String?
   registration_form_password String?
-  role String @default("ORDINARY USER")
+  role Role @default(ORDINARY_USER)
+}
+
+enum Role {
+  ORDINARY_USER
+  ADMIN
+  SUPPORT
+  RESIDENT  
 }

@@ -4,16 +4,17 @@ import { PrismaService } from 'prisma.service';
 import { InfoPageAboutZone } from './InfoAboutEconomicZone/EconomicZonePage';
 import { User } from '@prisma/client';
 import { pathToImageFolder } from '@/constants';
+import { BecomeAResident, MainMenu } from './BecomeAResident/BecomeAResident';
 
 @Injectable()
 export class BotService implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}
 
-  async onModuleInit() {
+  onModuleInit = async () => {
     await this.botMessage();
-  }
+  };
 
-  async botMessage() {
+  botMessage = async () => {
     const bot = new TelegramBot(process.env.BOT_API, { polling: true });
 
     bot.onText(/\/start/, async (msg) => {
@@ -21,13 +22,13 @@ export class BotService implements OnModuleInit {
       if (!user) {
         await this.createNewUser(
           msg.from.id.toString(),
-          msg.from.username,
-          msg.from.first_name + msg.from.last_name
+          msg.from.username ?? '',
+          msg.from.first_name ?? '' + msg.from.last_name ?? ''
         );
       }
 
       await bot.sendPhoto(msg.chat.id, pathToImageFolder + 'Обложка.png', {
-        reply_markup: this.FirstMenu(),
+        reply_markup: MainMenu(),
         parse_mode: 'HTML',
         caption: `Здравствуйте, ${msg.from.first_name}! Этот чат-бот позволит вам окунуться в мир ОЭЗ`
       });
@@ -37,19 +38,11 @@ export class BotService implements OnModuleInit {
     });
     bot.on('message', (msg) => {
       InfoPageAboutZone(bot, msg);
+      BecomeAResident(bot, msg, this.prisma);
     });
-  }
-
-  FirstMenu = (): TelegramBot.ReplyKeyboardMarkup => {
-    const b1: TelegramBot.KeyboardButton = { text: 'Узнать об ОЭЗ' };
-    const b2: TelegramBot.KeyboardButton = { text: 'Стать резидентом' };
-    const b3: TelegramBot.KeyboardButton = { text: 'Я уже резидент' };
-    const kb: TelegramBot.ReplyKeyboardMarkup = {
-      keyboard: [[b1, b2, b3]],
-      resize_keyboard: true
-    };
-    return kb;
   };
+
+  
 
   createNewUser = async (telegramId: string, username: string, full_name: string) => {
     await this.prisma.user.create({

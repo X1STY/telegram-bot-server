@@ -12,7 +12,7 @@ export const ExemptionsPage = async (bot: TelegramBot, msg: TelegramBot.Message)
 };
 
 export const ExemptionsMenu = (): TelegramBot.ReplyKeyboardMarkup => {
-  const b1: TelegramBot.KeyboardButton = { text: 'Стать Резидентом' };
+  const b1: TelegramBot.KeyboardButton = { text: 'Стать резидентом' };
   const kb: TelegramBot.ReplyKeyboardMarkup = {
     keyboard: [[b1]],
     resize_keyboard: true
