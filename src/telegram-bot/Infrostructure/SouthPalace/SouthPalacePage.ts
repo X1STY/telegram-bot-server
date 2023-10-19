@@ -23,7 +23,7 @@ const SouthPalaceMenu = (): TelegramBot.ReplyKeyboardMarkup => {
 };
 
 export const SouthPalaceInfo = async (bot: TelegramBot, msg: TelegramBot.Message) => {
-  if (!msg.text.startsWith('Южная')) {
+  if (!msg.text.includes('Южная площадка')) {
     INVENTUMPage(bot, msg);
     TECHNUMPage(bot, msg);
     VITUMPage(bot, msg);

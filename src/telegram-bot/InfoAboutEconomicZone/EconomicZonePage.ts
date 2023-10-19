@@ -9,7 +9,7 @@ import { ServicesAndSupportPage } from './GeneralInformation/ServicesAndSupport/
 import { NorthPalaceInfo } from '../Infrostructure/NorthPalace/NorthPalacePage';
 
 export const InfoPageAboutZone = async (bot: TelegramBot, msg: TelegramBot.Message) => {
-  if (!msg.text?.startsWith('Узнать об ОЭЗ')) {
+  if (!msg.text?.includes('Узнать об ОЭЗ')) {
     await b1Click(bot, msg);
     await b2Click(bot, msg);
     return;
@@ -33,7 +33,7 @@ export const InfoPageMenu = (): TelegramBot.ReplyKeyboardMarkup => {
 };
 
 const b1Click = async (bot: TelegramBot, msg: TelegramBot.Message) => {
-  if (!msg.text.startsWith('Общие сведения')) {
+  if (!msg.text.includes('Общие сведения')) {
     await ExemptionsPage(bot, msg);
     await ServicesAndSupportPage(bot, msg);
     await WayToObtainStatusPage(bot, msg);
@@ -43,7 +43,7 @@ const b1Click = async (bot: TelegramBot, msg: TelegramBot.Message) => {
 };
 
 const b2Click = async (bot: TelegramBot, msg: TelegramBot.Message) => {
-  if (!msg.text.startsWith('Инфраструктура')) {
+  if (!msg.text.includes('Инфраструктура')) {
     await SouthPalaceInfo(bot, msg);
     await NorthPalaceInfo(bot, msg);
     return;

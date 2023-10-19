@@ -13,7 +13,7 @@ const NorthPalaceMenu = (): TelegramBot.ReplyKeyboardMarkup => {
 };
 
 export const NorthPalaceInfo = async (bot: TelegramBot, msg: TelegramBot.Message) => {
-  if (!msg.text.startsWith('Северная')) {
+  if (!msg.text.includes('Северная площадка')) {
     AdministrativeСenterPage(bot, msg);
     return;
   }
