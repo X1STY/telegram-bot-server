@@ -33,6 +33,7 @@ module.exports = {
       'import/no-extraneous-dependencies': 0,
       'import/prefer-default-export': 0,
       'import/no-cycle': 2,
+      endOfLine: 'off',
       'import/order': [
         2,
         {

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import TelegramBot from 'node-telegram-bot-api';
 import { MainMenu } from '../markups';
+import { findUserById } from '../bot.service';
 
 export const BecomeAResident = async (
   bot: TelegramBot,
@@ -18,11 +19,7 @@ const registrateResident = async (
   msg: TelegramBot.Message,
   prisma: PrismaClient
 ) => {
-  let user = await prisma.user.findFirst({
-    where: {
-      telegramId: msg.from.id.toString()
-    }
-  });
+  let user = await findUserById(msg.from.id.toString(), prisma);
 
   if (user.role === 'RESIDENT') {
     await bot.sendMessage(msg.from.id, 'Вы уже зарегестрированы как резидент!', {
@@ -44,11 +41,7 @@ const registrateResident = async (
         id: user.id
       }
     });
-    user = await prisma.user.findFirst({
-      where: {
-        telegramId: msg.from.id.toString()
-      }
-    });
+    user = await findUserById(msg.from.id.toString(), prisma);
   }
 
   if (!user.registration_form_contact_data) {
@@ -64,11 +57,7 @@ const registrateResident = async (
         id: user.id
       }
     });
-    user = await prisma.user.findFirst({
-      where: {
-        telegramId: msg.from.id.toString()
-      }
-    });
+    user = await findUserById(msg.from.id.toString(), prisma);
   }
 
   if (!user.registration_form_password) {

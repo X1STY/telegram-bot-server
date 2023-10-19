@@ -2,9 +2,11 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import TelegramBot = require('node-telegram-bot-api');
 import { PrismaService } from 'prisma.service';
 import { InfoPageAboutZone } from './InfoAboutEconomicZone/EconomicZonePage';
-import { User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { pathToImageFolder } from '@/constants';
-import { BecomeAResident, MainMenu } from './BecomeAResident/BecomeAResident';
+import { BecomeAResident } from './BecomeAResident/BecomeAResident';
+import { AlreadyRegistered } from './AlreadyRegistered/AlreadyRegistered';
+import { MainMenu } from './markups';
 
 @Injectable()
 export class BotService implements OnModuleInit {
@@ -18,7 +20,7 @@ export class BotService implements OnModuleInit {
     const bot = new TelegramBot(process.env.BOT_API, { polling: true });
 
     bot.onText(/\/start/, async (msg) => {
-      const user = await this.findUserById(msg.from.id.toString());
+      const user = await findUserById(msg.from.id.toString(), this.prisma);
       if (!user) {
         await this.createNewUser(
           msg.from.id.toString(),
@@ -39,6 +41,8 @@ export class BotService implements OnModuleInit {
     bot.on('message', (msg) => {
       InfoPageAboutZone(bot, msg);
       BecomeAResident(bot, msg, this.prisma);
+      AlreadyRegistered(bot, msg, this.prisma);
+      backToMainMenuHandler(bot, msg);
     });
   };
 
@@ -51,12 +55,21 @@ export class BotService implements OnModuleInit {
       }
     });
   };
-
-  findUserById = async (telegramId: string): Promise<User> => {
-    return await this.prisma.user.findFirst({
-      where: {
-        telegramId
-      }
-    });
-  };
 }
+
+export const findUserById = async (telegramId: string, prisma: PrismaClient): Promise<User> => {
+  return await prisma.user.findFirst({
+    where: {
+      telegramId
+    }
+  });
+};
+
+const backToMainMenuHandler = async (bot: TelegramBot, msg: TelegramBot.Message) => {
+  if (msg.text !== 'В начало') {
+    return;
+  }
+  await bot.sendMessage(msg.from.id, 'Возвращаю вас в начальное меню!', {
+    reply_markup: MainMenu()
+  });
+};

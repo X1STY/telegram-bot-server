@@ -1,13 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { InfoAboutInfrostructure } from '../Infrostructure/InfrostructurePage';
 import { GeneralInfoPage } from './GeneralInformation/GeneralInformationPage';
-import { SouthPalaceInfo } from '../Infrostructure/SouthPalace/SouthPalacePage';
+import { SouthPalaceInfo } from './Infrostructure/SouthPalace/SouthPalacePage';
 import { pathToImageFolder } from '@/constants';
 import { ExemptionsPage } from './GeneralInformation/Exemptions/Exemptions';
 import { WayToObtainStatusPage } from './GeneralInformation/WayToObtainStatus/WayToObtainsStatus';
 import { ServicesAndSupportPage } from './GeneralInformation/ServicesAndSupport/ServicesAndSupport';
-import { NorthPalaceInfo } from '../Infrostructure/NorthPalace/NorthPalacePage';
+import { NorthPalaceInfo } from './Infrostructure/NorthPalace/NorthPalacePage';
 import { InfoPageMenu } from '../markups';
+import { InfoAboutInfrostructure } from './Infrostructure/InfrostructurePage';
 
 export const InfoPageAboutZone = async (bot: TelegramBot, msg: TelegramBot.Message) => {
   if (!msg.text?.includes('Узнать об ОЭЗ')) {

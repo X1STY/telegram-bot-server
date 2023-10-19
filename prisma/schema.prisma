@@ -10,15 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Application {
+  application_id Int @default(autoincrement()) @id
+  meeting_room_number Int
+  booking_time DateTime
+  status Status?
+
+  author_telegram_id String
+  author User @relation(fields: [author_telegram_id], references: [telegramId])
+
+}
+
 model User {
   id Int @default(autoincrement()) @id
-  telegramId String
+  telegramId String @unique
   username String
   full_name String
   registration_form_full_name String?
   registration_form_contact_data String?
   registration_form_password String?
   role Role @default(ORDINARY_USER)
+
+  applications Application[]
 }
 
 enum Role {
@@ -26,4 +39,9 @@ enum Role {
   ADMIN
   SUPPORT
   RESIDENT  
+}
+
+enum Status {
+  Accepted
+  Declined
 }
