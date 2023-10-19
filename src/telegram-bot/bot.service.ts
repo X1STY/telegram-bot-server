@@ -42,8 +42,6 @@ export class BotService implements OnModuleInit {
     });
   };
 
-  
-
   createNewUser = async (telegramId: string, username: string, full_name: string) => {
     await this.prisma.user.create({
       data: {

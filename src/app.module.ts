@@ -7,6 +7,6 @@ import { BotService } from './telegram-bot/bot.service';
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [PrismaService, BotService, AppService],
+  providers: [PrismaService, BotService, AppService]
 })
 export class AppModule {}

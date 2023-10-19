@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import TelegramBot from 'node-telegram-bot-api';
+import { MainMenu } from '../markups';
 
 export const BecomeAResident = async (
   bot: TelegramBot,
@@ -103,15 +104,4 @@ const registrateResident = async (
       reply_markup: MainMenu()
     }
   );
-};
-
-export const MainMenu = (): TelegramBot.ReplyKeyboardMarkup => {
-  const b1: TelegramBot.KeyboardButton = { text: 'Узнать об ОЭЗ' };
-  const b2: TelegramBot.KeyboardButton = { text: 'Стать резидентом' };
-  const b3: TelegramBot.KeyboardButton = { text: 'Я уже резидент' };
-  const kb: TelegramBot.ReplyKeyboardMarkup = {
-    keyboard: [[b1, b2, b3]],
-    resize_keyboard: true
-  };
-  return kb;
 };

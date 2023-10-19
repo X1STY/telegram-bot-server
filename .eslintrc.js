@@ -3,23 +3,24 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: './tsconfig.json'
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   root: true,
   env: {
     node: true,
-    jest: true,
+    jest: true
   },
-  'import/resolver': {
-    typescript: {
-      project: './tsconfig.json',
-    },
-  },
+
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts'],
+      '@typescript-eslint/parser': ['.ts']
+    },
+    'import/resolver': {
+      typescript: {
+        project: './tsconfig.json'
+      }
     },
     ignorePatterns: ['.eslintrc.js'],
     rules: {
@@ -40,14 +41,14 @@ module.exports = {
           pathGroups: [
             {
               pattern: '@/**',
-              group: 'internal',
-            },
+              group: 'internal'
+            }
           ],
           alphabetize: {
-            order: 'asc',
-          },
-        },
-      ],
-    },
-  },
+            order: 'asc'
+          }
+        }
+      ]
+    }
+  }
 };

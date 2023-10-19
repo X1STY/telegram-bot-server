@@ -1,5 +1,5 @@
 import { pathToImageFolder } from '@/constants';
-import TelegramBot, { InlineKeyboardButton } from 'node-telegram-bot-api';
+import TelegramBot from 'node-telegram-bot-api';
 
 const Menu = (url: string): TelegramBot.InlineKeyboardMarkup => {
   const b1: TelegramBot.InlineKeyboardButton = { text: 'Разместиться', url };

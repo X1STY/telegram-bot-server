@@ -1,4 +1,5 @@
 import { pathToImageFolder } from '@/constants';
+import { ExemptionsMenu } from '@/telegram-bot/markups';
 import TelegramBot from 'node-telegram-bot-api';
 
 export const ExemptionsPage = async (bot: TelegramBot, msg: TelegramBot.Message) => {
@@ -9,13 +10,4 @@ export const ExemptionsPage = async (bot: TelegramBot, msg: TelegramBot.Message)
     reply_markup: ExemptionsMenu(),
     caption: 'Тут общие сведения'
   });
-};
-
-export const ExemptionsMenu = (): TelegramBot.ReplyKeyboardMarkup => {
-  const b1: TelegramBot.KeyboardButton = { text: 'Стать резидентом' };
-  const kb: TelegramBot.ReplyKeyboardMarkup = {
-    keyboard: [[b1]],
-    resize_keyboard: true
-  };
-  return kb;
 };

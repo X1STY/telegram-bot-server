@@ -7,20 +7,7 @@ import {
   TECHNUMPage,
   VITUMPage
 } from './Centers/CentersPage';
-
-const SouthPalaceMenu = (): TelegramBot.ReplyKeyboardMarkup => {
-  const b1: TelegramBot.KeyboardButton = { text: 'Центр инноваций и технологий INVENTUM' };
-  const b2: TelegramBot.KeyboardButton = { text: 'Инженерный центр TECHNUM' };
-  const b3: TelegramBot.KeyboardButton = { text: 'Научно-внедренческий центр VITUM' };
-  const b4: TelegramBot.KeyboardButton = { text: 'Инжиниронговый центр FUTURUM' };
-  const b5: TelegramBot.KeyboardButton = { text: 'Экспоцентр' };
-
-  const kb: TelegramBot.ReplyKeyboardMarkup = {
-    keyboard: [[b1, b2], [b3, b4], [b5]],
-    resize_keyboard: true
-  };
-  return kb;
-};
+import { SouthPalaceMenu } from '@/telegram-bot/markups';
 
 export const SouthPalaceInfo = async (bot: TelegramBot, msg: TelegramBot.Message) => {
   if (!msg.text.includes('Южная площадка')) {
