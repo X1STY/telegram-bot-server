@@ -7,6 +7,7 @@ import { pathToImageFolder } from '@/constants';
 import { BecomeAResident } from './BecomeAResident/BecomeAResident';
 import { AlreadyRegistered } from './AlreadyRegistered/AlreadyRegistered';
 import { MainMenu } from './markups';
+import { AdminPanel } from './AdminPanel/AdminPanel';
 
 @Injectable()
 export class BotService implements OnModuleInit {
@@ -18,7 +19,6 @@ export class BotService implements OnModuleInit {
 
   botMessage = async () => {
     const bot = new TelegramBot(process.env.BOT_API, { polling: true });
-
     bot.onText(/\/start/, async (msg) => {
       const user = await findUserById(msg.from.id.toString(), this.prisma);
       if (!user) {
@@ -43,6 +43,7 @@ export class BotService implements OnModuleInit {
       BecomeAResident(bot, msg, this.prisma);
       AlreadyRegistered(bot, msg, this.prisma);
       backToMainMenuHandler(bot, msg);
+      AdminPanel(bot, msg, this.prisma);
     });
   };
 

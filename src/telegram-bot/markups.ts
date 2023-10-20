@@ -36,7 +36,7 @@ export const GeneralInfoMenu = (): TelegramBot.ReplyKeyboardMarkup => {
 export const ExemptionsMenu = (): TelegramBot.ReplyKeyboardMarkup => {
   const b1: TelegramBot.KeyboardButton = { text: 'Стать резидентом' };
   const kb: TelegramBot.ReplyKeyboardMarkup = {
-    keyboard: [[b1]],
+    keyboard: [[b1], [backButton]],
     resize_keyboard: true
   };
   return kb;
@@ -102,6 +102,17 @@ export const backButton: TelegramBot.KeyboardButton = { text: 'В начало' 
 export const ChangeUserDataMenu = (): TelegramBot.ReplyKeyboardMarkup => {
   const b1: TelegramBot.KeyboardButton = { text: 'Изменить имя' };
   const b2: TelegramBot.KeyboardButton = { text: 'Изменить контактные данные' };
+
+  const kb: TelegramBot.ReplyKeyboardMarkup = {
+    keyboard: [[b1], [b2], [backButton]],
+    resize_keyboard: true
+  };
+  return kb;
+};
+
+export const AdminPanelMenu = (): TelegramBot.ReplyKeyboardMarkup => {
+  const b1: TelegramBot.KeyboardButton = { text: 'Рассылка сообщения' };
+  const b2: TelegramBot.KeyboardButton = { text: 'Посмотреть все заявки' };
 
   const kb: TelegramBot.ReplyKeyboardMarkup = {
     keyboard: [[b1], [b2], [backButton]],

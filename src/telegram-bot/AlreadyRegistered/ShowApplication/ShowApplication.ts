@@ -1,6 +1,6 @@
 import { findUserById } from '@/telegram-bot/bot.service';
 import { RegisteredUserMenu } from '@/telegram-bot/markups';
-import { PrismaClient } from '@prisma/client';
+import { Application, PrismaClient } from '@prisma/client';
 import TelegramBot from 'node-telegram-bot-api';
 
 export const ShowApplicaton = async (
@@ -25,23 +25,33 @@ export const ShowApplicaton = async (
     });
     return;
   }
+  const message = await applicationView(applications, false, prisma);
+  await bot.sendMessage(msg.from.id, message, {
+    reply_markup: RegisteredUserMenu(user.role)
+  });
+};
 
+export const applicationView = async (
+  applications: Application[],
+  withAuthor: boolean,
+  prisma: PrismaClient
+): Promise<string> => {
   let answer = '';
-  applications.forEach((application) => {
-    answer =
-      answer +
+  for (const application of applications) {
+    const user = await findUserById(application.author_telegram_id, prisma);
+    answer +=
       'Заявка номер: ' +
       application.application_id +
+      (withAuthor ? '\nАвтор заявки: @' + user.username : '') +
       '\nБронирование переговорки по номеру: ' +
       application.meeting_room_number +
       '\nНа время: ' +
       application.booking_time.toLocaleDateString() +
-      ' ' + //Local date can work wrong in case server whould be located not in Tomsk so it would set time with server's location timezone
+      ' ' +
       application.booking_time.toLocaleTimeString() +
+      '\nСтатус заявки: ' +
+      (application.status ?? 'В обработке') +
       '\n\n';
-  });
-
-  await bot.sendMessage(msg.from.id, answer, {
-    reply_markup: RegisteredUserMenu(user.role)
-  });
+  }
+  return answer;
 };
