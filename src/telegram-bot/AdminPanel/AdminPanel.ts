@@ -10,8 +10,6 @@ export const AdminPanel = async (
   msg: TelegramBot.Message,
   prisma: PrismaClient
 ) => {
-  // Personally i'd like to check user.role === "ADMIN" here
-  //  but in order to present functionality admin panel can be accessed only by password
   const user = await findUserById(msg.from.id.toString(), prisma);
 
   if (msg.text === '/admin') {
