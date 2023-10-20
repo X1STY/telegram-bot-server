@@ -12,12 +12,8 @@ export const CheckAppApplications = async (
     return;
   }
   const applications = await prisma.application.findMany();
-  let message = 's';
-  try {
-    message = await applicationView(applications, true, prisma);
-  } catch (error) {
-    console.log(error);
-  }
+  const message = await applicationView(applications, true, prisma);
+
   await bot.sendMessage(msg.from.id, message.length ? message : 'sas', {
     reply_markup: AdminPanelMenu()
   });
