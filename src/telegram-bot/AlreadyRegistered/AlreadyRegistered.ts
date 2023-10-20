@@ -14,10 +14,7 @@ export const AlreadyRegistered = async (
   const user = await findUserById(msg.from.id.toString(), prisma);
 
   if (msg.text !== 'Я уже резидент') {
-    if (
-      user.role &&
-      (user.role === 'RESIDENT' || user.role === 'ADMIN' || user.role === 'SUPPORT')
-    ) {
+    if (user && (user.role === 'RESIDENT' || user.role === 'ADMIN' || user.role === 'SUPPORT')) {
       RegisterNewApplication(bot, msg, prisma);
       ShowApplicaton(bot, msg, prisma);
       MyContacts(bot, msg, prisma);
