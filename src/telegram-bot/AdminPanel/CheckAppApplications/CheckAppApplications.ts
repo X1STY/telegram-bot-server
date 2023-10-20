@@ -14,7 +14,7 @@ export const CheckAppApplications = async (
   const applications = await prisma.application.findMany();
   const message = await applicationView(applications, true, prisma);
 
-  await bot.sendMessage(msg.from.id, message.length ? message : 'sas', {
+  await bot.sendMessage(msg.from.id, message, {
     reply_markup: AdminPanelMenu()
   });
 };

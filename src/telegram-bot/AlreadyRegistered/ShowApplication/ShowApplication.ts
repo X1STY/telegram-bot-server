@@ -19,12 +19,6 @@ export const ShowApplicaton = async (
     }
   });
 
-  if (!applications.length) {
-    await bot.sendMessage(msg.from.id, 'У вас нет отправленных заявок', {
-      reply_markup: RegisteredUserMenu(user.role)
-    });
-    return;
-  }
   const message = await applicationView(applications, false, prisma);
   await bot.sendMessage(msg.from.id, message, {
     reply_markup: RegisteredUserMenu(user.role)
@@ -36,6 +30,9 @@ export const applicationView = async (
   withAuthor: boolean,
   prisma: PrismaClient
 ): Promise<string> => {
+  if (!applications.length) {
+    return 'У вас нет заявок';
+  }
   let answer = '';
   for (const application of applications) {
     const user = await findUserById(application.author_telegram_id, prisma);

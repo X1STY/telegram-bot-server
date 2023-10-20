@@ -2,6 +2,13 @@
 
 Telegram bot for ISHITR task
 
+## Telegram-bot access
+
+You can try it yourself by:
+t.me/test_isgit_bot
+or
+@test_isgit_bot
+
 ## Installation
 
 ```bash
