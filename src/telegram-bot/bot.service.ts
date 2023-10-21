@@ -39,9 +39,6 @@ export class BotService implements OnModuleInit {
       console.log(msg);
     });
     bot.on('message', (msg) => {
-      if (msg.text === '/start') {
-        return;
-      }
       InfoPageAboutZone(bot, msg);
       BecomeAResident(bot, msg, this.prisma);
       AlreadyRegistered(bot, msg, this.prisma);
