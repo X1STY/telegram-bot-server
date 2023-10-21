@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import TelegramBot from 'node-telegram-bot-api';
 import { MainMenu } from '../markups';
 import { findUserById } from '../bot.service';
+import { ReplayQuestionCallback } from '../ReplyQuestionCallback';
 
 export const BecomeAResident = async (
   bot: TelegramBot,
@@ -11,7 +12,7 @@ export const BecomeAResident = async (
   if (!(msg.text === 'Стать резидентом')) {
     return;
   }
-  registrateResident(bot, msg, prisma);
+  await registrateResident(bot, msg, prisma);
 };
 
 const registrateResident = async (
@@ -21,7 +22,7 @@ const registrateResident = async (
 ) => {
   let user = await findUserById(msg.from.id.toString(), prisma);
 
-  if (user.role === 'RESIDENT') {
+  if (user && user.role === 'RESIDENT') {
     await bot.sendMessage(msg.from.id, 'Вы уже зарегестрированы как резидент!', {
       reply_markup: MainMenu()
     });
@@ -30,9 +31,7 @@ const registrateResident = async (
 
   if (!user.registration_form_full_name) {
     await bot.sendMessage(msg.from.id, 'Введите свое имя');
-    const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-      bot.once('message', resolve);
-    });
+    const responseMsg = await ReplayQuestionCallback(bot, msg);
     await prisma.user.update({
       data: {
         registration_form_full_name: responseMsg.text.toString()
@@ -46,9 +45,7 @@ const registrateResident = async (
 
   if (!user.registration_form_contact_data) {
     await bot.sendMessage(msg.from.id, 'Введите контактные данные(email/номер телефона)');
-    const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-      bot.once('message', resolve);
-    });
+    const responseMsg = await ReplayQuestionCallback(bot, msg);
     await prisma.user.update({
       data: {
         registration_form_contact_data: responseMsg.text.toString()
@@ -62,9 +59,7 @@ const registrateResident = async (
 
   if (!user.registration_form_password) {
     await bot.sendMessage(msg.from.id, 'Введите желаемый пароль');
-    const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-      bot.once('message', resolve);
-    });
+    const responseMsg = await ReplayQuestionCallback(bot, msg);
     await prisma.user.update({
       data: {
         registration_form_password: responseMsg.text.toString()
@@ -75,7 +70,7 @@ const registrateResident = async (
     });
   }
 
-  if (user.role !== 'RESIDENT') {
+  if (user && user.role !== 'RESIDENT') {
     await prisma.user.update({
       data: {
         role: 'RESIDENT'

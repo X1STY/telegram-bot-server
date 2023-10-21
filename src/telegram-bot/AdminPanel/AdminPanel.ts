@@ -4,6 +4,7 @@ import { AdminPanelMenu, MainMenu } from '../markups';
 import { SendMessageToAllUsers } from './SendMessageToAllUsers/SendMessageToAllUsers';
 import { CheckAppApplications } from './CheckAppApplications/CheckAppApplications';
 import { findUserById } from '../bot.service';
+import { ReplayQuestionCallback } from '../ReplyQuestionCallback';
 
 export const AdminPanel = async (
   bot: TelegramBot,
@@ -14,14 +15,14 @@ export const AdminPanel = async (
 
   if (msg.text === '/admin') {
     if (user && user.role !== 'ADMIN') {
-      registerUserAsAdmin(bot, msg, prisma);
+      await registerUserAsAdmin(bot, msg, prisma);
     } else {
       await bot.sendMessage(msg.from.id, 'Вы авторизированы как администратор', {
         reply_markup: AdminPanelMenu()
       });
     }
   }
-  if (user.role === 'ADMIN') {
+  if (user && user.role === 'ADMIN') {
     await SendMessageToAllUsers(bot, msg, prisma);
     await CheckAppApplications(bot, msg, prisma);
   }
@@ -33,9 +34,7 @@ const registerUserAsAdmin = async (
   prisma: PrismaClient
 ) => {
   await bot.sendMessage(msg.from.id, 'Введите пароль доступа в админ панель');
-  const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-    bot.once('message', resolve);
-  });
+  const responseMsg = await ReplayQuestionCallback(bot, msg);
 
   if (responseMsg.text !== process.env.ADMIN_PASSWORD) {
     await bot.sendMessage(msg.from.id, 'Неверный пароль!', {

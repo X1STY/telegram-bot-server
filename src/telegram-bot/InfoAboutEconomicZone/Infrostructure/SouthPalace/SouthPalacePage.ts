@@ -11,11 +11,11 @@ import { SouthPalaceMenu } from '@/telegram-bot/markups';
 
 export const SouthPalaceInfo = async (bot: TelegramBot, msg: TelegramBot.Message) => {
   if (!msg.text.includes('Южная площадка')) {
-    INVENTUMPage(bot, msg);
-    TECHNUMPage(bot, msg);
-    VITUMPage(bot, msg);
-    FUTURUMPage(bot, msg);
-    EKCPOCENTERPage(bot, msg);
+    await INVENTUMPage(bot, msg);
+    await TECHNUMPage(bot, msg);
+    await VITUMPage(bot, msg);
+    await FUTURUMPage(bot, msg);
+    await EKCPOCENTERPage(bot, msg);
     return;
   }
 

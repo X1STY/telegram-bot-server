@@ -14,7 +14,7 @@ export const RegisterNewApplication = async (
 
   const user = await findUserById(msg.from.id.toString(), prisma);
 
-  if (user.role !== 'RESIDENT') {
+  if (user && user.role !== 'RESIDENT') {
     return;
   }
   //this whole method defenetely should be tested or restructured somehow user cannot break down whole app

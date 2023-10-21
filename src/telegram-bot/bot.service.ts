@@ -38,12 +38,12 @@ export class BotService implements OnModuleInit {
     bot.on('polling_error', (msg) => {
       console.log(msg);
     });
-    bot.on('message', (msg) => {
-      InfoPageAboutZone(bot, msg);
-      BecomeAResident(bot, msg, this.prisma);
-      AlreadyRegistered(bot, msg, this.prisma);
-      backToMainMenuHandler(bot, msg);
-      AdminPanel(bot, msg, this.prisma);
+    bot.on('message', async (msg) => {
+      await InfoPageAboutZone(bot, msg);
+      await BecomeAResident(bot, msg, this.prisma);
+      await AlreadyRegistered(bot, msg, this.prisma);
+      await backToMainMenuHandler(bot, msg);
+      await AdminPanel(bot, msg, this.prisma);
     });
   };
 

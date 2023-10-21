@@ -5,6 +5,7 @@ import { RegisterNewApplication } from './RegisterNewApplication/RegisterNewAppl
 import { findUserById } from '../bot.service';
 import { ShowApplicaton } from './ShowApplication/ShowApplication';
 import { MyContacts } from './MyContacts/MyContacts';
+import { ReplayQuestionCallback } from '../ReplyQuestionCallback';
 
 export const AlreadyRegistered = async (
   bot: TelegramBot,
@@ -15,14 +16,14 @@ export const AlreadyRegistered = async (
 
   if (msg.text !== 'Я уже резидент') {
     if (user && (user.role === 'RESIDENT' || user.role === 'ADMIN' || user.role === 'SUPPORT')) {
-      RegisterNewApplication(bot, msg, prisma);
-      ShowApplicaton(bot, msg, prisma);
-      MyContacts(bot, msg, prisma);
+      await RegisterNewApplication(bot, msg, prisma);
+      await ShowApplicaton(bot, msg, prisma);
+      await MyContacts(bot, msg, prisma);
     }
     return;
   }
 
-  if (user.role === 'ORDINARY_USER') {
+  if (user && user.role === 'ORDINARY_USER') {
     await bot.sendMessage(msg.from.id, 'Вы не зарегестрированы! Пройдите регистрацию!', {
       reply_markup: MainMenu()
     });
@@ -30,9 +31,8 @@ export const AlreadyRegistered = async (
   }
 
   await bot.sendMessage(msg.from.id, 'Введите пароль для авторизации');
-  const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-    bot.once('message', resolve);
-  });
+  const responseMsg = await ReplayQuestionCallback(bot, msg);
+
   if (!(user.registration_form_password === responseMsg.text)) {
     bot.sendMessage(msg.from.id, 'Неверный пароль!', {
       reply_markup: MainMenu()

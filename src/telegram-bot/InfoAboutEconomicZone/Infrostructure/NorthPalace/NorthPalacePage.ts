@@ -5,7 +5,7 @@ import { NorthPalaceMenu } from '@/telegram-bot/markups';
 
 export const NorthPalaceInfo = async (bot: TelegramBot, msg: TelegramBot.Message) => {
   if (!msg.text.includes('Северная площадка')) {
-    AdministrativeСenterPage(bot, msg);
+    await AdministrativeСenterPage(bot, msg);
     return;
   }
 

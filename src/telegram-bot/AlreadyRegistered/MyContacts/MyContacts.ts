@@ -1,5 +1,6 @@
 import { findUserById } from '@/telegram-bot/bot.service';
 import { ChangeUserDataMenu, RegisteredUserMenu } from '@/telegram-bot/markups';
+import { ReplayQuestionCallback } from '@/telegram-bot/ReplyQuestionCallback';
 import { PrismaClient, User } from '@prisma/client';
 import TelegramBot from 'node-telegram-bot-api';
 
@@ -36,9 +37,7 @@ const changeUserFullName = async (
   prisma: PrismaClient
 ) => {
   await bot.sendMessage(msg.from.id, 'Введите новое имя');
-  const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-    bot.once('message', resolve);
-  });
+  const responseMsg = await ReplayQuestionCallback(bot, msg);
   await prisma.user.update({
     data: {
       registration_form_full_name: responseMsg.text
@@ -59,9 +58,7 @@ const changeUserContactData = async (
   prisma: PrismaClient
 ) => {
   await bot.sendMessage(msg.from.id, 'Введите новые контактные данные (email или телефон)');
-  const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-    bot.once('message', resolve);
-  });
+  const responseMsg = await ReplayQuestionCallback(bot, msg);
   await prisma.user.update({
     data: {
       registration_form_contact_data: responseMsg.text

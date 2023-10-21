@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import TelegramBot from 'node-telegram-bot-api';
 import { AdminPanelMenu } from '@/telegram-bot/markups';
+import { ReplayQuestionCallback } from '@/telegram-bot/ReplyQuestionCallback';
 
 export const SendMessageToAllUsers = async (
   bot: TelegramBot,
@@ -11,9 +12,7 @@ export const SendMessageToAllUsers = async (
     return;
   }
   await bot.sendMessage(msg.from.id, 'Введите сообщение для рассылки всем пользователям');
-  const responseMsg = await new Promise<TelegramBot.Message>((resolve) => {
-    bot.once('message', resolve);
-  });
+  const responseMsg = await ReplayQuestionCallback(bot, msg);
   const users = await prisma.user.findMany({
     where: {
       NOT: {
