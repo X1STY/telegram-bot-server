@@ -21,9 +21,13 @@ export const SendMessageToAllUsers = async (
       }
     }
   });
-  users.forEach(async (user) => {
-    await bot.sendMessage(user.telegramId, responseMsg.text);
-  });
+  for (let i = 0; i < users.length; i++) {
+    try {
+      await bot.sendMessage(users[i].telegramId, responseMsg.text);
+    } catch (error) {
+      continue;
+    }
+  }
 
   await bot.sendMessage(msg.from.id, 'Рассылка началась!', {
     reply_markup: AdminPanelMenu()

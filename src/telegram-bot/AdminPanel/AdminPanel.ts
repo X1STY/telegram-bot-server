@@ -13,7 +13,7 @@ export const AdminPanel = async (
   const user = await findUserById(msg.from.id.toString(), prisma);
 
   if (msg.text === '/admin') {
-    if (user.role !== 'ADMIN') {
+    if (user && user.role !== 'ADMIN') {
       registerUserAsAdmin(bot, msg, prisma);
     } else {
       await bot.sendMessage(msg.from.id, 'Вы авторизированы как администратор', {
